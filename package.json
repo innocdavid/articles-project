@@ -1,0 +1,19 @@
+{
+  "name": "nodekb-backend",
+  "version": "1.0.0",
+  "description": "A simple knowledge base application",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Banja David Lotigo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.4",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
