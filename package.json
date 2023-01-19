@@ -9,6 +9,7 @@
   "author": "Banja David Lotigo",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "express": "^4.18.2",
     "mongoose": "^6.8.4",
     "pug": "^3.0.2"

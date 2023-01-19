@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const Articles = require("./models/articles");
+const bodyParser = require("body-parser");
 
 // db configuration
 mongoose.connect("mongodb://127.0.0.1:27017/nodekb");
@@ -23,6 +24,11 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+// middleware
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: false }))
+
+
 // home route
 app.get("/", (req, res) => {
     Articles.find({}, (err, articles) => {
@@ -34,12 +40,26 @@ app.get("/", (req, res) => {
     });
 });
 
-// add articles
+// get added articles
 app.get("/articles/add", (req, res) => {
     res.render("add_article", {
         title: "Add Articles"
     });
 });
+
+// post articles
+app.post('/articles/add', (req, res) => {
+    let articles = new Articles();
+    articles.title = req.body.title;
+    articles.author = req.body.author;
+    articles.body = req.body.body;
+
+    articles.save((err) => {
+        if (err) return console.log(err.message);
+        res.redirect('/')
+    });
+});
+
 
 // server
 app.listen(3000, () => {
