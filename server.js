@@ -43,6 +43,15 @@ app.get("/", (req, res) => {
     });
 });
 
+// load a get a single article page
+app.get("/article/:id", (req, res) => {
+    Articles.findById(req.params.id, (err, article) => {
+        res.render("single_article", {
+            article: article
+        });
+    });
+});
+
 // get added articles
 app.get("/articles/add", (req, res) => {
     res.render("add_article", {
@@ -51,18 +60,41 @@ app.get("/articles/add", (req, res) => {
 });
 
 // post articles
-app.post('/articles/add', (req, res) => {
-    let articles = new Articles();
-    articles.title = req.body.title;
-    articles.author = req.body.author;
-    articles.body = req.body.body;
+app.post("/articles/add", (req, res) => {
+    let article = new Articles();
+    article.title = req.body.title;
+    article.author = req.body.author;
+    article.body = req.body.body;
 
-    articles.save((err) => {
+    article.save((err) => {
         if (err) return console.log(err.message);
         res.redirect('/')
     });
 });
 
+// load edit article form
+app.get("/article/edit/:id", (req, res) => {
+    Articles.findById(req.params.id, (err, article) => {
+        res.render("edit_article", {
+            title: "Edit Article",
+            article: article
+        });
+    });
+});
+
+// update an article
+app.post("/article/edit/:id", (req, res) => {
+    let article = {}
+    article.title = req.body.title;
+    article.author = req.body.author;
+    article.body = req.body.body;
+
+    let query = {_id: req.params.id}
+    Articles.updateOne(query, article, (err) => {
+        if (err) return console.log(err.message);
+        res.redirect('/')
+    });
+})
 
 // server
 app.listen(3000, () => {
