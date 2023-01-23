@@ -94,9 +94,17 @@ app.post("/article/edit/:id", (req, res) => {
         if (err) return console.log(err.message);
         res.redirect('/')
     });
-})
+});
+
+app.delete('/article/:id', (req, res) => {
+    let query = {_id: req.params.id};
+    Articles.remove(query, (err) => {
+        if(err) console.log(err.message);
+        res.send("Success")
+    })
+});
 
 // server
 app.listen(3000, () => {
     console.log("server started on port 3000");
-})
+});
