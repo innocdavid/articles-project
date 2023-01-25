@@ -4,6 +4,9 @@ const path = require("path");
 const mongoose = require("mongoose");
 const Articles = require("./models/articles");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const flash = require("connect-flash");
+const { body, validationResult } = require("express-validator");
 
 // db configuration
 mongoose.connect("mongodb://127.0.0.1:27017/nodekb");
@@ -30,6 +33,21 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // set public folder static
 app.use(express.static(path.join(__dirname, "public")));
+
+// session
+app.use(session({
+    secret: '2qwrqwr',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+
+// connect flash
+app.use(require("connect-flash")());
+app.use((req, res, next) => {
+    res.locals.messages = require("express-messages")(req, res);
+    next();
+});
 
 
 // home route
